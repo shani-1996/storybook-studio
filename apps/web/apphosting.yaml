@@ -1,0 +1,8 @@
+# Firebase App Hosting runtime config for the web app.
+# Secrets are referenced by Secret Manager name only (never values) and added when features need them.
+runConfig:
+  cpu: 1
+  memoryMiB: 512
+  minInstances: 0
+  maxInstances: 2
+  concurrency: 80

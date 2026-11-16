@@ -20,3 +20,9 @@ variable "page_gen_max_dispatches_per_second" {
   type        = number
   default     = 1
 }
+
+variable "github_repository" {
+  description = "GitHub repository (owner/name) allowed to deploy through Workload Identity Federation."
+  type        = string
+  default     = "shani-1996/storybook-studio"
+}

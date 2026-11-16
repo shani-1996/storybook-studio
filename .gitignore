@@ -14,3 +14,6 @@ terraform.tfvars
 crash.log
 *-debug.log
 ui-debug.log
+*.plan
+.next/
+next-env.d.ts

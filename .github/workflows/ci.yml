@@ -49,5 +49,30 @@ jobs:
           npm install -g firebase-tools
           pnpm run test:rules
 
-  # Deploy to dev on push to main will be added in this milestone once the owner provides the
-  # Workload Identity Federation values (no long-lived keys in GitHub). See docs/setup-checklist.md.
+  # Deploy to dev on push to main. Authenticates with Workload Identity Federation (no keys in GitHub).
+  # Only this repository on the main branch can act as sa-cicd (enforced in infra/terraform/wif.tf).
+  # The web app itself deploys through Firebase App Hosting, which builds from the repository.
+  deploy-dev:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/420016114828/locations/global/workloadIdentityPools/github/providers/github
+          service_account: sa-cicd@book-dev-env.iam.gserviceaccount.com
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Deploy security rules to dev
+        run: |
+          npm install -g firebase-tools
+          firebase deploy --only firestore:rules,storage --project book-dev-env --non-interactive
