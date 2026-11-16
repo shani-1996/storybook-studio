@@ -27,8 +27,9 @@ Dev project ID: `book-dev-env` (spec default `storybook-dev` was not used). Regi
 
 ## D. Access for the agent and CI
 - [x] `gcloud` and `firebase` CLIs installed and logged in
-- [ ] GitHub repository created and shared with the agent (this folder is not a git repo yet)
-- [ ] Workload Identity Federation for GitHub Actions (agent provides exact commands)
+- [x] GitHub repository `shani-1996/storybook-studio` created and connected
+- [x] Workload Identity Federation (agent, applied 2026-11-16): pool/provider `github`, limited to the repo on `main`; `sa-cicd` has firebaserules.admin, serviceusage consumer, firebase.viewer. Roles unverified until the first CI deploy runs
+- [ ] OWNER: connect Firebase App Hosting to the repo (interactive, see below)
 
 ## E. Third-party accounts (test mode first)
 - [ ] Razorpay, Stripe, SMTP provider (Brevo or Resend), printer sandbox, domain name
