@@ -15,7 +15,7 @@ Dev project ID: `book-dev-env` (spec default `storybook-dev` was not used). Regi
 - [x] Default Storage bucket `book-dev-env.firebasestorage.app` in `asia-south1`; rules deployed
 - [x] Auth: Email link enabled (agent)
 - [x] Auth: Google sign-in enabled (owner, confirmed)
-- [x] Auth: `localhost` added to authorised domains (agent). [ ] add the production domain once it exists
+- [x] Auth: `localhost` added to authorised domains (agent), plus the App Hosting domain. [ ] add the production domain once it exists
 - [x] Web app `storybook-web-dev` registered; config saved in `apps/web/firebase-config.dev.json`
 - [ ] **TODO LATER (owner, 2026-11-16):** App Check with reCAPTCHA v3 (site key). Do NOT enforce App Check on Firestore/Storage/Auth until the web app sends tokens; needed before the intake milestone goes to real users
 
@@ -29,7 +29,7 @@ Dev project ID: `book-dev-env` (spec default `storybook-dev` was not used). Regi
 - [x] `gcloud` and `firebase` CLIs installed and logged in
 - [x] GitHub repository `shani-1996/storybook-studio` created and connected
 - [x] Workload Identity Federation (agent, applied 2026-11-16): pool/provider `github`, limited to the repo on `main`; `sa-cicd` has firebaserules.admin, serviceusage consumer, firebase.viewer. Verified: CI run #4 deployed the rules as sa-cicd
-- [ ] OWNER: connect Firebase App Hosting to the repo (interactive, see below)
+- [x] Firebase App Hosting backend `storybook-studio` (asia-southeast1) connected to the repo, live branch `main`, auto-rollout. URL: https://storybook-studio--book-dev-env.asia-southeast1.hosted.app (placeholder page verified HTTP 200)
 
 ## E. Third-party accounts (test mode first)
 - [ ] Razorpay, Stripe, SMTP provider (Brevo or Resend), printer sandbox, domain name

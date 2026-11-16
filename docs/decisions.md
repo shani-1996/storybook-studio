@@ -61,3 +61,11 @@ Models run on identical photos. Ratings are the owner's 1-5 "looks like this chi
 - TODO LATER (owner decision): App Check + reCAPTCHA v3. Do not enforce App Check until the web app sends tokens.
 - Firebase console showed zl1,133 credit remaining with about zl40 of spike spend not yet reflected (billing lags a few hours); recheck.
 - Service account names differ from the spec (GCP rules): sa-face-score, sa-cicd.
+
+## 2026-11-16: Web hosting (Firebase App Hosting)
+- Backend `storybook-studio`, region `asia-southeast1` (Singapore; App Hosting offers fewer regions than Firestore, Mumbai was not used). Child data never passes through this server; the browser talks to Firestore/Storage in `asia-south1` directly.
+- Runtime `nodejs22` with automatic base image updates. Repo CI and the dev machine still use Node 20 (end of life): move CI to Node 22.
+- Deploy model: every push to `main` is built by Cloud Build (buildpacks) and rolled out to Cloud Run. Not managed by Terraform.
+- apps/web is self-contained: own `package-lock.json` (App Hosting needs a lock file inside the app folder; the monorepo's pnpm lock file is at the root), own `tsconfig.json`, and `next.config.mjs` picks the project root (app folder on App Hosting, repo root with pnpm locally). Keep the web app free of `workspace:` dependencies, or the standalone build breaks. After changing web dependencies, regenerate `apps/web/package-lock.json` from a clean folder (`npm install --package-lock-only`), not inside the pnpm tree (it would record local paths).
+- Failures hit and fixed: (1) missing lock file in app folder; (2) Next.js root set to repo root nested the standalone output and the adapter could not find routes-manifest.json.
+- Runtime service account is Firebase's default; switch to the dedicated `sa-web` later.
