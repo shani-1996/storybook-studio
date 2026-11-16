@@ -4,3 +4,7 @@ packages:
   - "services/genkit-flows"
   - "packages/*"
   - "tests/*"
+allowBuilds:
+  '@firebase/util': true
+  esbuild: true
+  protobufjs: true
