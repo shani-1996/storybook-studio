@@ -1,0 +1,8 @@
+{
+  "id": "cover",
+  "titleWord": "COVER",
+  "textSide": "right",
+  "scene": "front cover of a children's picture book: the child faces the viewer, head tilted slightly upward, with a happy wondering smile; small floating illustrated icons around her (a stethoscope, a paper aeroplane, a little rocket, a chef's hat, a paintbrush, a football) drifting in a soft pastel sky with a few stars and clouds; no text anywhere",
+  "outfit": { "girl": "cosy simple dress", "boy": "cosy simple outfit", "neutral": "cosy simple outfit" },
+  "composition": "child on the left half, large in frame, face clearly visible and looking toward the viewer; icons floating in an arc above and to the right; the top-right area kept soft, light and empty for the book title"
+}

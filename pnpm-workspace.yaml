@@ -1,0 +1,6 @@
+packages:
+  - "apps/*"
+  - "functions"
+  - "services/genkit-flows"
+  - "packages/*"
+  - "tests/*"

@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env*
+*.local
+__pycache__/
+.venv/
+spike-output/
+service-account*.json
+data/
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+crash.log
+*-debug.log
+ui-debug.log

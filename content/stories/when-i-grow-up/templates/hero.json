@@ -1,0 +1,8 @@
+{
+  "id": "hero",
+  "titleWord": "HERO",
+  "textSide": "right",
+  "scene": "a single friendly head-and-shoulders portrait of the child looking at the viewer with a gentle smile, plain soft cream background, character reference portrait",
+  "outfit": { "girl": "simple everyday top", "boy": "simple everyday t-shirt", "neutral": "simple everyday top" },
+  "composition": "child centred, one face only"
+}

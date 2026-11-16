@@ -1,0 +1,10 @@
+{
+  "id": "when-i-grow-up",
+  "title": "When {name} Grows Up",
+  "minAge": 3,
+  "maxAge": 7,
+  "pageCount": 24,
+  "themeKind": "professions",
+  "themesPerBook": 8,
+  "defaultLang": "en"
+}

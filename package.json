@@ -1,0 +1,13 @@
+{
+  "name": "gycb",
+  "private": true,
+  "packageManager": "pnpm@12.21.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "test:rules": "firebase emulators:exec --only firestore,storage --project demo-gycb \"pnpm --filter @gycb/rules-tests exec vitest run --reporter=verbose --no-file-parallelism\""
+  }
+}

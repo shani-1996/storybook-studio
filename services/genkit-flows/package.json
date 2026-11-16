@@ -1,0 +1,22 @@
+{
+  "name": "@gycb/genkit-flows",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "spike": "tsx spike/run.ts"
+  },
+  "dependencies": {
+    "@genkit-ai/google-genai": "^1.44.0",
+    "genkit": "^1.44.0",
+    "sharp": "^0.35.5",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}

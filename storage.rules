@@ -1,0 +1,36 @@
+rules_version = '2';
+
+// Storage rules (spec sections 5 and 10).
+// The browser may only upload up to 3 photos into its own book while the book is still editable.
+// Nothing is ever readable from the browser: reads use short-lived signed URLs issued by a Function.
+// Generated images and print PDFs live in separate buckets with no client access at all.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function bookDoc(bookId) {
+      return firestore.get(/databases/(default)/documents/books/$(bookId)).data;
+    }
+
+    function ownsEditableBook(bookId) {
+      return request.auth != null
+        && bookDoc(bookId).ownerUid == request.auth.uid
+        && bookDoc(bookId).status in ['draft', 'photos_checking', 'photos_failed', 'photos_ready'];
+    }
+
+    // Three fixed slots enforce "max 3 per book".
+    match /books/{bookId}/photos/{photoId} {
+      allow create, update: if ownsEditableBook(bookId)
+        && photoId in ['photo1', 'photo2', 'photo3']
+        && request.resource.size > 0
+        && request.resource.size < 15 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|png|heic|heif)');
+
+      allow delete: if ownsEditableBook(bookId);
+      allow read: if false;
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

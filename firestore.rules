@@ -1,0 +1,121 @@
+rules_version = '2';
+
+// Security rules (spec sections 5 and 10). Principles:
+//  - owner-only reads on a book and everything under it
+//  - the browser may only create a draft and edit dedication text / professions
+//  - status, consent, orders, config, audit and mail are server-side only (Functions / Workflows)
+//  - admins are identified by the custom auth claim `admin == true`
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    function ownsBook(bookId) {
+      return signedIn()
+        && get(/databases/$(database)/documents/books/$(bookId)).data.ownerUid == request.auth.uid;
+    }
+
+    function validChild(c) {
+      return c is map
+        && c.keys().hasOnly(['firstName', 'gender', 'age'])
+        && c.keys().hasAll(['firstName', 'gender', 'age'])
+        && c.firstName is string && c.firstName.size() >= 1 && c.firstName.size() <= 20
+        && c.gender in ['girl', 'boy', 'neutral']
+        && c.age is int && c.age >= 3 && c.age <= 7;
+    }
+
+    function validProfessions(p) {
+      return p is list && p.size() == 8;
+    }
+
+    function validDedication(d) {
+      return d is string && d.size() <= 400;
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /books/{bookId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.ownerUid == request.auth.uid);
+
+      // Draft creation only. Consent, status changes and every other field are written server-side.
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(
+             ['ownerUid', 'storyId', 'child', 'relationship', 'status', 'professions', 'dedicationText', 'createdAt'])
+        && request.resource.data.keys().hasAll(
+             ['ownerUid', 'storyId', 'child', 'relationship', 'status', 'professions', 'dedicationText', 'createdAt'])
+        && request.resource.data.storyId is string
+        && request.resource.data.storyId.matches('^[a-z0-9-]{1,40}$')
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.status == 'draft'
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.relationship in
+             ['parent', 'grandparent', 'aunt_uncle', 'sibling', 'family_friend', 'other']
+        && validChild(request.resource.data.child)
+        && validProfessions(request.resource.data.professions)
+        && validDedication(request.resource.data.dedicationText);
+
+      // The parent may edit only the dedication and the profession picks, and only before payment.
+      allow update: if signedIn()
+        && resource.data.ownerUid == request.auth.uid
+        && resource.data.status in ['draft', 'photos_ready', 'preview_ready']
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['dedicationText', 'professions'])
+        && validProfessions(request.resource.data.professions)
+        && validDedication(request.resource.data.dedicationText);
+
+      allow delete: if false; // purge and account deletion run in Functions
+
+      match /photos/{photoId} {
+        allow read: if isAdmin() || ownsBook(bookId);
+        allow write: if false;
+      }
+
+      // Owner sees a page only once the server marks it visible (the selected candidate).
+      match /pages/{pageNo} {
+        allow read: if isAdmin()
+          || (ownsBook(bookId) && resource.data.get('visibleToOwner', false) == true);
+        allow write: if false;
+      }
+    }
+
+    match /orders/{orderId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.ownerUid == request.auth.uid);
+      allow write: if false;
+    }
+
+    // Prices are shown on the landing page. Other config is admin-readable only.
+    match /config/pricing {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /config/{doc} {
+      allow read: if isAdmin();
+      allow write: if false; // admin edits go through an audited Function
+    }
+
+    match /templates/{templateId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /audit/{id} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /mail/{id} {
+      allow read, write: if false;
+    }
+
+    // Anything not listed above is denied.
+  }
+}

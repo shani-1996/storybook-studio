@@ -1,0 +1,8 @@
+{
+  "id": "astronaut",
+  "titleWord": "ASTRONAUT",
+  "textSide": "right",
+  "scene": "child in a child-sized white spacesuit with helmet held under one arm, stars and a pastel moon behind",
+  "outfit": { "girl": "white spacesuit, helmet off", "boy": "white spacesuit, helmet off", "neutral": "white spacesuit, helmet off" },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

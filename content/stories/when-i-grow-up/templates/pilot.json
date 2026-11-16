@@ -1,0 +1,8 @@
+{
+  "id": "pilot",
+  "titleWord": "PILOT",
+  "textSide": "right",
+  "scene": "child in a pilot uniform and cap standing beside a small friendly aeroplane, clouds and sky wash background",
+  "outfit": { "girl": "navy pilot jacket and cap", "boy": "navy pilot jacket and cap", "neutral": "navy pilot jacket and cap" },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

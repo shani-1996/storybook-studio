@@ -1,0 +1,4 @@
+project_id = "book-dev-env"
+# region                            = "asia-south1"
+# page_gen_max_concurrent           = 4
+# page_gen_max_dispatches_per_second = 1
