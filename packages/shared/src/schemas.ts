@@ -73,3 +73,12 @@ export const DEFAULT_LIMITS: LimitsConfig = {
   faceScoreMin: 0.4,
   judgeScoreMin: 7,
 };
+
+/** Version of the consent text shown to the parent (text lives in content/ui/en.json). Bump on any wording change. */
+export const CONSENT_VERSION = "2026-11-draft-1";
+
+export const ConsentInput = z.object({
+  bookId: z.string().min(1).max(128),
+  version: z.string().min(1).max(64),
+});
+export type ConsentInput = z.infer<typeof ConsentInput>;

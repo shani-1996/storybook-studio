@@ -17,3 +17,4 @@ ui-debug.log
 *.plan
 .next/
 next-env.d.ts
+lib/

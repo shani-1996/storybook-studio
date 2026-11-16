@@ -1,0 +1,27 @@
+{
+  "photoCheck": {
+    "status": {
+      "pending": "Checking...",
+      "pass": "Looks good",
+      "fail": "Please replace this photo"
+    },
+    "reasons": {
+      "NO_FACE": "We could not see a face. Please use a clear photo of your child looking toward the camera.",
+      "MULTIPLE_FACES": "We can see more than one face. Please use a photo with only your child in it.",
+      "FACE_TOO_SMALL": "Your child's face is too small in this photo. Please move closer or crop the photo.",
+      "LOW_CONFIDENCE": "We could not see the face clearly. Please try a sharper, brighter photo.",
+      "BLURRY": "This photo is blurry. Please use a sharp one.",
+      "UNDER_EXPOSED": "This photo is too dark. Please use one taken in good light.",
+      "HEAD_TILTED": "Your child's head is turned or tilted too much. Please use a photo facing the camera.",
+      "HEADWEAR": "Please use a photo without a hat, cap or sunglasses.",
+      "DIFFERENT_CHILD": "These photos do not seem to show the same child. Please make sure all three are of the same child.",
+      "UNREADABLE": "We could not open this photo. Please try a JPEG or PNG.",
+      "CHECK_FAILED": "Something went wrong while checking this photo. Please try again."
+    }
+  },
+  "consent": {
+    "version": "2026-11-draft-1",
+    "text": "I am this child’s parent or legal guardian, or I have their permission to create this book. I agree that the photos I upload will be used only to create this personalised book, processed by our cloud and AI providers on our behalf, and deleted within 30 days after delivery or sooner if I ask.",
+    "draftNote": "Draft wording: must be reviewed by the owner’s lawyer against the DPDP Act before launch."
+  }
+}

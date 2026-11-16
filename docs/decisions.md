@@ -69,3 +69,27 @@ Models run on identical photos. Ratings are the owner's 1-5 "looks like this chi
 - apps/web is self-contained: own `package-lock.json` (App Hosting needs a lock file inside the app folder; the monorepo's pnpm lock file is at the root), own `tsconfig.json`, and `next.config.mjs` picks the project root (app folder on App Hosting, repo root with pnpm locally). Keep the web app free of `workspace:` dependencies, or the standalone build breaks. After changing web dependencies, regenerate `apps/web/package-lock.json` from a clean folder (`npm install --package-lock-only`), not inside the pnpm tree (it would record local paths).
 - Failures hit and fixed: (1) missing lock file in app folder; (2) Next.js root set to repo root nested the standalone output and the adapter could not find routes-manifest.json.
 - Runtime service account is Firebase's default; switch to the dedicated `sa-web` later.
+
+## 2026-11-16: Milestone 3 (Intake) decisions and findings
+
+### Licence risk: InsightFace pre-trained models (MUST RESOLVE BEFORE LAUNCH)
+- The spec chooses InsightFace/ArcFace for face scoring. The InsightFace library code is MIT, but its pre-trained model packs (`buffalo_l`, used here) are published for non-commercial research use only. A paid product needs a commercial licence from the InsightFace authors, or a different face-embedding model with a commercial-friendly licence, or a managed service. Owner to decide; verify the current licence text at github.com/deepinsight/insightface first. Fine for dev and the spike.
+
+### Photo check timing (spec target: under 5 s per photo)
+- face-score on Cloud Run (2 vCPU, 2 GiB, CPU only): cold start about 13 s, warm about 2.3 s per `/embed` call. The full real check (Vision + cleanup + face-score) took 5 to 7 s per photo in a local run while warm, including slow token fetching in the dev script.
+- Options if the deployed function misses 5 s: `min-instances=1` for face-score (small continuous cost), a warm-up call when the parent opens the photos page, or a smaller detection size. Measure on the deployed function first.
+
+### Design
+- Photos upload from the browser to the private `<project>-uploads` bucket (linked to Firebase so the same Storage rules apply). The Storage-triggered function normalises (HEIC to JPEG, orientation, strip EXIF/GPS, max 2048 px), runs the Cloud Vision face rules, calls face-score for a 512-d embedding, stores only `photoN.jpg` and `photoN.embedding.json`, and deletes the raw upload. Book status moves photos_checking to photos_ready or photos_failed, with an audit entry per change.
+- Same-child check: every pair of embeddings must reach cosine 0.45; the odd photo out is flagged `DIFFERENT_CHILD`.
+- Cloud Vision has no sunglasses detector, only `headwearLikelihood`. Sunglasses are not detected; could be added to the Gemini judge later.
+- Embeddings sit in the uploads bucket with Google default encryption. Spec rule 7 (Cloud KMS for embeddings and shipping addresses) is scheduled for milestone 6.
+- Consent: callable `submitConsent` records version, time and an HMAC-SHA256 hash of the IP (key in Secret Manager `IP_HASH_PEPPER`). The consent text is a DRAFT for the owner's lawyer.
+- Function defaults for dev (bucket, face-score URL, service account) are in code, because writing environment files is blocked by a Claude Code permission rule. Another environment overrides them with a per-project environment file in `functions/`.
+- Web: Tailwind added (spec). apps/web has an `.npmrc` with `legacy-peer-deps=true` because npm crashes resolving the dependency tree without it. Shared rules are copied into `apps/web/lib/generated` by `scripts/sync-web-shared.mjs` (CI checks they are in sync), because the web app cannot import the monorepo packages.
+
+### Not done in milestone 3 (blocked on owner actions, see the pull request)
+- Secret `IP_HASH_PEPPER` not created (owner action; the spec says owners create secrets).
+- Terraform `functions.tf` not applied: 3 IAM grants for sa-functions (eventarc.eventReceiver, serviceusage.serviceUsageConsumer, run.invoker on face-score) plus secretAccessor on the pepper once it exists.
+- Cloud Functions not deployed to dev, so no browser end-to-end test in dev. The photo check was verified end to end with real Cloud Vision and the real face-score service through `functions/dev/try-real.mts` (in-memory storage and database).
+- Browser pages were built and type-checked but not exercised in a browser.

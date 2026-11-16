@@ -72,3 +72,16 @@ def test_invalid_image_does_not_echo_input():
 def test_similarity_requires_one_face_per_photo():
     c = TestClient(create_app(FakeEngine([face([1, 0]), face([0, 1])])))
     assert c.post("/similarity", json={"images": [png_b64()]}).status_code == 422
+
+
+def test_embed_returns_the_single_face_embedding():
+    c = TestClient(create_app(FakeEngine([face([0.5, 0.5, 0.0])])))
+    r = c.post("/embed", json={"image": png_b64()})
+    assert r.status_code == 200
+    assert r.json()["embedding"] == [0.5, 0.5, 0.0]
+
+
+def test_embed_needs_exactly_one_face():
+    for faces in ([], [face([1, 0]), face([0, 1])]):
+        c = TestClient(create_app(FakeEngine(faces)))
+        assert c.post("/embed", json={"image": png_b64()}).status_code == 422

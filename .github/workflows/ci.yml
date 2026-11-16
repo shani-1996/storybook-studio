@@ -33,10 +33,16 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Web copies of shared rules are in sync
+        run: node scripts/sync-web-shared.mjs --check
+
       - name: Typecheck and unit tests (TypeScript)
         run: |
           pnpm -r typecheck
           pnpm -r test
+
+      - name: Functions bundle builds
+        run: pnpm --filter functions build
 
       - name: Unit tests (Python face-score)
         working-directory: services/face-score

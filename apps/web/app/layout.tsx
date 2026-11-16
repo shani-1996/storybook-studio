@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+import { AuthProvider } from "../components/auth";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Personalised storybooks",
@@ -14,8 +16,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, fontFamily: "system-ui, sans-serif", background: "#f6f1ea", color: "#2b2b2b" }}>
-        {children}
+      <body className="font-sans">
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

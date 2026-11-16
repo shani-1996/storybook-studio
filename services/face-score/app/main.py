@@ -92,6 +92,14 @@ def create_app(engine: FaceEngine | None = None) -> FastAPI:
             "largestFaceWidthFraction": (main.box[2] - main.box[0]) / w,
         }
 
+    @app.post("/embed")
+    def embed(req: DetectReq):
+        """512-d ArcFace embedding of the single face in a photo. Never logged."""
+        faces = get_engine().detect(decode(req.image))
+        if len(faces) != 1:
+            raise HTTPException(status_code=422, detail="exactly one face required")
+        return {"embedding": [float(x) for x in faces[0].embedding], "detectionScore": faces[0].det_score}
+
     @app.post("/similarity")
     def similarity(req: SimilarityReq):
         """Photo-set check: all photos must show the same child."""

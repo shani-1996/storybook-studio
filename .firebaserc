@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "default": "book-dev-env"
+  },
+  "targets": {
+    "book-dev-env": {
+      "storage": {
+        "default-bucket": ["book-dev-env.firebasestorage.app"],
+        "uploads": ["book-dev-env-uploads"]
+      }
+    }
+  }
+}

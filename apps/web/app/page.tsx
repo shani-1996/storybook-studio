@@ -1,20 +1,20 @@
+import Link from "next/link";
+import { Page } from "../components/ui";
+
 export default function Home() {
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-        textAlign: "center",
-      }}
-    >
-      <h1 style={{ fontSize: "2rem", margin: 0 }}>Personalised storybooks</h1>
-      <p style={{ maxWidth: "32rem", fontSize: "1.1rem", lineHeight: 1.5 }}>
-        A printed storybook starring your child. We are still building it. Please check back soon.
+    <Page title="Personalised storybooks">
+      <p className="text-lg leading-relaxed">
+        A printed storybook starring your child. Upload three photos, preview three pages for free, and we print and
+        deliver the book.
       </p>
-    </main>
+      <Link
+        href="/create/details"
+        className="self-start rounded-lg bg-teal-700 px-6 py-3 font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+      >
+        Create your book
+      </Link>
+      <p className="text-sm opacity-75">This site is in early development.</p>
+    </Page>
   );
 }
