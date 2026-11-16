@@ -1,16 +1,17 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// The repo is a monorepo (apps/web lives two folders below the root). Pin the root explicitly so
-// Next.js never guesses from a stray lock file elsewhere, locally or in the App Hosting build.
-const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+// apps/web is deployed on its own by Firebase App Hosting (own package-lock.json, own tsconfig).
+// Pin the project root to this folder so Next.js never guesses it from a lock file elsewhere in the
+// monorepo, and the build output (.next/standalone) keeps the layout the App Hosting adapter expects.
+const appRoot = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  outputFileTracingRoot: repoRoot,
-  turbopack: { root: repoRoot },
+  outputFileTracingRoot: appRoot,
+  turbopack: { root: appRoot },
 };
 
 export default nextConfig;
