@@ -52,3 +52,12 @@ resource "google_cloud_run_v2_service_iam_member" "functions_invoke_photo_check"
   role     = "roles/run.invoker"
   member   = "serviceAccount:${google_service_account.sa["functions"].email}"
 }
+
+# Storage security rules read the book's owner and status from Firestore (firestore.get in storage.rules).
+# Google's Storage service agent needs this role for that cross-service lookup. The Firebase CLI normally offers
+# to grant it interactively; our deploys run without prompts, so it is granted here instead.
+resource "google_project_iam_member" "storage_rules_read_firestore" {
+  project = var.project_id
+  role    = "roles/firebaserules.firestoreServiceAgent"
+  member  = "serviceAccount:service-${data.google_project.this.number}@gcp-sa-firebasestorage.iam.gserviceaccount.com"
+}
