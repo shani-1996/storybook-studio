@@ -1,0 +1,217 @@
+{
+  "status": "DRAFT written as placeholder copy. The owner must read, edit and approve every line before any book is printed.",
+  "approvedByOwner": false,
+  "lang": "en",
+  "tokens": {
+    "{name}": "the child's first name, as the parent typed it",
+    "{subj}": "he, she or they",
+    "{Subj}": "He, She or They (start of a sentence)",
+    "{poss}": "his, her or their",
+    "{Poss}": "His, Her or Their (start of a sentence)",
+    "{obj}": "him, her or them",
+    "{Obj}": "Him, Her or Them (start of a sentence)"
+  },
+  "style": "Short lines to read aloud. Warm, simple words (suits ages 1 to 7). Each profession has a rhyme for the picture page, one true fact, and one encouraging line. Avoid verbs that depend on he, she or they, so the same text works for every child.",
+  "intro": {
+    "rhyme": [
+      "When {name} grows up, what will {name} be?",
+      "There is so much to try and so much to see!",
+      "Let us visit some jobs, one by one,",
+      "and find out which ones are the most fun!"
+    ]
+  },
+  "closing": {
+    "rhyme": [
+      "Whatever you choose, {name}, you can do it too.",
+      "Be curious, be kind, and always be you.",
+      "The world is waiting for all you will do.",
+      "We believe in you, {name}, and we love you!"
+    ],
+    "signoff": {
+      "parent": "With all our love",
+      "grandparent": "With all my love",
+      "aunt_uncle": "With lots of love",
+      "sibling": "Your biggest fan",
+      "family_friend": "With warm wishes",
+      "other": "With love"
+    }
+  },
+  "professions": {
+    "doctor": {
+      "title": "Doctor",
+      "rhyme": [
+        "Thump-thump, thump-thump, listen well,",
+        "{name} has a heartbeat story to tell.",
+        "With gentle hands and a caring smile,",
+        "a doctor helps friends all the while."
+      ],
+      "funFact": "A doctor uses a stethoscope to listen to your heartbeat.",
+      "motivation": "Kind hearts make the best doctors. Keep being kind, {name}!"
+    },
+    "pilot": {
+      "title": "Pilot",
+      "rhyme": [
+        "Up, up, up, above the trees,",
+        "{name} soars along on the morning breeze.",
+        "Over the mountains, over the sea,",
+        "the sky says, 'Come and fly with me!'"
+      ],
+      "funFact": "Aeroplanes fly higher than most clouds, where the sky is bright and clear.",
+      "motivation": "Every pilot starts by dreaming big. Keep dreaming, {name}!"
+    },
+    "astronaut": {
+      "title": "Astronaut",
+      "rhyme": [
+        "Three, two, one, blast off to the stars!",
+        "{name} zooms past the Moon and Mars.",
+        "Floating, floating, light as air,",
+        "an astronaut waves hello up there."
+      ],
+      "funFact": "In space there is no up or down, so astronauts float like feathers.",
+      "motivation": "Astronauts never stop wondering. Keep wondering, {name}!"
+    },
+    "scientist": {
+      "title": "Scientist",
+      "rhyme": [
+        "Why is the sky blue? Why does rain fall?",
+        "{name} asks questions about it all.",
+        "A curious mind and a try-it-and-see,",
+        "that is how scientists learn to be."
+      ],
+      "funFact": "Scientists ask 'why?' and then try things out to find the answer.",
+      "motivation": "Every great scientist was once a curious child. Keep asking why, {name}!"
+    },
+    "artist": {
+      "title": "Artist",
+      "rhyme": [
+        "Red and yellow, blue and green,",
+        "{name} paints the brightest scene.",
+        "Splish, splash, swish, a rainbow grows,",
+        "a happy picture everyone knows."
+      ],
+      "funFact": "When you mix blue paint and yellow paint together, you get green.",
+      "motivation": "There is no wrong way to make art. Keep creating, {name}!"
+    },
+    "chef": {
+      "title": "Chef",
+      "rhyme": [
+        "Stir, stir, stir the yummy stew,",
+        "{name} cooks up something good for you.",
+        "A pinch of this and a dash of that,",
+        "a chef wears a tall white hat!"
+      ],
+      "funFact": "Chefs taste their food while they cook, to make it just right.",
+      "motivation": "Good cooks try new tastes and love to share. Be brave and try, {name}!"
+    },
+    "footballer": {
+      "title": "Footballer",
+      "rhyme": [
+        "Run, run, run and kick the ball,",
+        "{name} dribbles past them all.",
+        "Pass to a friend and shout, 'Hooray!'",
+        "Teamwork wins the game today."
+      ],
+      "funFact": "A football team has eleven players on the pitch.",
+      "motivation": "Teams win when friends help each other. Keep being a great teammate, {name}!"
+    },
+    "cricketer": {
+      "title": "Cricketer",
+      "rhyme": [
+        "Swing the bat and hear it crack,",
+        "{name} hits the ball way back.",
+        "Run, run, run, then catch and throw,",
+        "cricket is fun wherever you go."
+      ],
+      "funFact": "In cricket, one team bats while the other team bowls and catches.",
+      "motivation": "Every player keeps on practising. Never give up, {name}!"
+    },
+    "engineer": {
+      "title": "Engineer",
+      "rhyme": [
+        "Bricks and beams and bridges tall,",
+        "{name} plans and builds them all.",
+        "Measure it, build it, test it twice,",
+        "making the world work smooth and nice."
+      ],
+      "funFact": "Engineers design bridges strong enough for trucks, trains and people.",
+      "motivation": "Engineers try again when things fall down. Never give up, {name}!"
+    },
+    "teacher": {
+      "title": "Teacher",
+      "rhyme": [
+        "Show me letters, show me sums,",
+        "{name} teaches, and learning comes.",
+        "Every question, big or small,",
+        "helps us grow and learn it all."
+      ],
+      "funFact": "Teachers help people learn new things every day, and they keep learning too.",
+      "motivation": "The best teachers never stop learning. Keep learning, {name}!"
+    },
+    "musician": {
+      "title": "Musician",
+      "rhyme": [
+        "Strum the strings and tap the drum,",
+        "{name} plays and everyone hums.",
+        "Sing a song that makes hearts dance,",
+        "music gives the world a chance."
+      ],
+      "funFact": "You hit a drum, blow a flute and pluck a guitar to make music.",
+      "motivation": "Every musician starts with just one note. Keep practising, {name}!"
+    },
+    "firefighter": {
+      "title": "Firefighter",
+      "rhyme": [
+        "Nee-naw, nee-naw, hear the bell,",
+        "{name} rushes to help as well.",
+        "Brave and careful, kind and strong,",
+        "helping people all day long."
+      ],
+      "funFact": "Firefighters wear special clothes that keep them safe while they help.",
+      "motivation": "Brave people are kind people too. Keep being brave and kind, {name}!"
+    },
+    "veterinarian": {
+      "title": "Veterinarian",
+      "rhyme": [
+        "A fluffy bunny, a puppy so small,",
+        "{name} takes care of them all.",
+        "A gentle check and a kind little pat,",
+        "vets help animals, and that is that!"
+      ],
+      "funFact": "A vet is a doctor for animals, from tiny hamsters to big horses.",
+      "motivation": "Being gentle with animals is a superpower. Keep caring, {name}!"
+    },
+    "architect": {
+      "title": "Architect",
+      "rhyme": [
+        "Draw a line and draw a square,",
+        "{name} dreams up buildings everywhere.",
+        "Tall ones, round ones, painted bright,",
+        "a plan on paper takes its flight."
+      ],
+      "funFact": "Architects draw a plan for a building before anyone starts to build it.",
+      "motivation": "Big buildings begin as small ideas. Keep imagining, {name}!"
+    },
+    "photographer": {
+      "title": "Photographer",
+      "rhyme": [
+        "Click! A picture, smile for me!",
+        "{name} catches what we see.",
+        "A flower, a bird, a sunny day,",
+        "a photo helps them stay and stay."
+      ],
+      "funFact": "A camera lets in light to make a picture.",
+      "motivation": "Look closely and you will spot wonderful things. Keep looking, {name}!"
+    },
+    "explorer": {
+      "title": "Explorer",
+      "rhyme": [
+        "With a map and a compass, off we go,",
+        "{name} wonders where the rivers flow.",
+        "Over hills and through the trees,",
+        "adventure waits in every breeze."
+      ],
+      "funFact": "The needle of a compass always points to the north.",
+      "motivation": "Explorers are brave and curious. Keep exploring, {name}!"
+    }
+  }
+}

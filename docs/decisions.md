@@ -106,3 +106,23 @@ Models run on identical photos. Ratings are the owner's 1-5 "looks like this chi
   - The Milestone 1 likeness gate (average 4.0 or more, no set below 3.0) now needs toddlers in the test set, not only ages 3 to 7.
   - Prompts and outfits were written for older children; check a one-year-old in a doctor's coat or pilot's uniform looks right and age-appropriate.
   - Face-scoring accuracy for infants is generally lower; the licence question for the face model still applies.
+
+## 2026-11-17: Milestone 4 content and format decisions
+Owner decided: ONE illustration page per profession, with a short interesting write-up that teaches the child something and makes them feel good and motivated. For everything else the owner said: choose the industry standard for children's books. These are agent defaults; the owner can override any of them. Items marked OWNER need an account, a licence check or approval.
+
+| Decision | Choice | Why |
+| --- | --- | --- |
+| Page layout | 24 pages, as in the spec. Each profession is an illustration page (picture plus the 4-line rhyme) with a facing text page ("Did you know?" fact plus an encouraging line). | Keeps the 24-page count printers expect and the classic picture-book rhythm of picture on one side, words on the other. Only 8 profession illustrations are needed. |
+| Illustrations per book | About 11: cover, intro, 8 professions, closing (the "belongs to" page reuses the hero portrait) | Cheaper than the spec's estimate of about 15 |
+| Write-up per profession | Rhyme (4 short lines, read aloud) + one true fact + one encouraging line | Teaches and motivates; draft copy in `content/stories/when-i-grow-up/copy.en.json` |
+| Copy approval | `approvedByOwner: false`. OWNER must read and edit every line. The print step must refuse to print while this is false. | Spec: never ship invented copy without owner approval |
+| Text size | 20 pt or more for the rhyme at the 11 x 8.5 in trim (24 pt for the youngest ages), never below 16 pt | Read-aloud books for young children use large type |
+| Fonts | Rhymes and facts: Andika (designed for early readers, with simple single-storey letters). Titles: Fredoka SemiBold (rounded and friendly). Both are free under the SIL Open Font Licence, which allows commercial printing and embedding in PDFs. OWNER: confirm the licence text on fonts.google.com. | Legible and no licence fees |
+| Email provider | Brevo (SMTP). OWNER: create the account, verify the sending domain and store the connection string as the secret `smtp-uri`. | Generous free daily limit and plain SMTP, which the Firebase email extension uses. Free-tier limits change: check the current plan. |
+| Free preview | Cover plus one profession page illustrated; the static pages (dedication, intro verse, text pages) are shown too, at no generation cost. Watermarked, max 1200 px. | Shows enough to feel like a real book while keeping the cost per preview low |
+| Candidates | 2 per page in the preview, 3 in the full book (spec defaults) | Quality versus cost |
+| Prices (provisional) | Hardcover INR 2,799, softcover INR 1,899. Re-check against real print, shipping, payment-fee and generation costs before launch. | Midpoints of the spec's suggested ranges |
+| Shipping at launch | India only | Standard for a first launch: simpler tax, shipping and payments. Stripe and other countries later. |
+| Data retention | Source photos deleted 30 days after delivery or on request (as the spec proposes). OWNER: lawyer to confirm. | |
+| Trim size | 11 x 8.5 in landscape hardcover (see the earlier recommendation); final once the printer is chosen | |
+| Profession defaults | First eight in the spec's list: doctor, pilot, astronaut, scientist, artist, chef, footballer, cricketer | |
