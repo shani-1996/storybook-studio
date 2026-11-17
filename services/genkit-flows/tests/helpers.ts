@@ -19,7 +19,10 @@ export function makeDeps(over: Partial<Deps> = {}): Deps {
   return {
     images: { generate: async () => ({ base64: "AAAA", mimeType: "image/png", usage: { inputTokens: 100, outputTokens: 1120 } }) },
     judge: { judge: async () => goodJudge },
-    faces: { compare: async () => ({ similarity: 0.7, faces: 1, largestFaceWidthFraction: 0.3 }) },
+    faces: {
+      compare: async () => ({ similarity: 0.7, faces: 1, largestFaceWidthFraction: 0.3 }),
+      detect: async () => [{ x: 0.15, y: 0.3, w: 0.2, h: 0.3 }],
+    },
     models: {
       primaryImageModel: "gemini-3.1-flash-image", judgeModel: "gemini-flash", resolution: "2K", aspectRatio: "4:3",
       candidatesPerPage: 3, location: "global", usdPerMillionInputTokens: null, usdPerMillionOutputTokens: null,

@@ -69,7 +69,7 @@ function dryRunDeps(models: Deps["models"], limits: Deps["limits"]): Deps {
     models, limits,
     images: { generate: async () => ({ base64: png, mimeType: "image/png", usage: { inputTokens: 500, outputTokens: 1120 } }) },
     judge: { judge: async () => ({ hands_ok: true, extra_limbs: false, extra_children: false, outfit_matches: true, props_match: true, age_looks_right: true, style_matches: true, text_in_image: false, score: 8 }) },
-    faces: { compare: async () => ({ similarity: 0.6, faces: 1, largestFaceWidthFraction: 0.3 }) },
+    faces: { compare: async () => ({ similarity: 0.6, faces: 1, largestFaceWidthFraction: 0.3 }), detect: async () => [] },
   };
 }
 

@@ -23,4 +23,6 @@ export interface Judge {
 export interface FaceScorer {
   /** Mean-of-reference-embeddings cosine similarity, plus number of faces and face width fraction. */
   compare(args: { image: ImageRef; references: ImageRef[] }): Promise<{ similarity: number; faces: number; largestFaceWidthFraction: number }>;
+  /** Where the faces are, as fractions of the picture (used to keep text away from them). */
+  detect(image: ImageRef): Promise<{ x: number; y: number; w: number; h: number }[]>;
 }

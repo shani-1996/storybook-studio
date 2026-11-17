@@ -140,3 +140,39 @@ describe.skipIf(!hasBrowser)("rendering with a real browser", () => {
     expect(meta.width).toBe(1200);
   });
 });
+
+describe.skipIf(!hasBrowser)("message pages (dedication, opening verse)", () => {
+  let r: PageRenderer;
+  beforeAll(async () => {
+    r = await PageRenderer.launch();
+  });
+  afterAll(async () => r.close());
+
+  it("renders a dedication with a heading, a message and a sign-off", async () => {
+    const out = await r.render({ kind: "message", title: "Dear Zoe", lines: ["Love you to the moon and back."], footer: "With all our love", watermark: true, widthPx: 1100 });
+    expect([out.width, out.height]).toEqual([1100, 850]);
+    expect(out.needsHuman).toBe(false);
+    expect(out.fontErrors).toBe(0);
+  });
+
+  it("renders the opening verse without a heading", async () => {
+    const out = await r.render({ kind: "message", title: "", lines: ["When Zoe grows up,", "what will Zoe be?", "There is so much to try", "and so much to see!"], watermark: false, widthPx: 1100 });
+    expect(out.needsHuman).toBe(false);
+  });
+
+  it("a long heading (20-character name) shrinks to fit", async () => {
+    const out = await r.render({ kind: "message", title: "Dear Maximiliana-Josephin", lines: ["Hello."], watermark: false, widthPx: 1100 });
+    expect(out.fit.some((f) => f.overflow)).toBe(false);
+  });
+
+  it("a very long message shrinks, and is flagged if it still cannot fit", async () => {
+    const out = await r.render({ kind: "message", title: "Dear Zoe", lines: ["word ".repeat(400)], watermark: false, widthPx: 1100 });
+    expect(out.needsHuman).toBe(true);
+  });
+
+  it("escapes markup in a parent's message", async () => {
+    const html = buildPage({ kind: "message", title: "<b>Dear</b>", lines: ["<img src=x onerror=alert(1)>"], watermark: false, widthPx: 800 }).html;
+    expect(html).not.toContain("<img src=x");
+    expect(html).not.toContain("<b>Dear</b>");
+  });
+});

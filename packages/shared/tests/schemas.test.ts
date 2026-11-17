@@ -56,3 +56,14 @@ describe("limits defaults", () => {
     expect(DEFAULT_LIMITS).toMatchObject({ previewsPerUser: 1, regensPerBook: 1, maxCandidatesPerPage: 4, maxDailyPreviews: 200, maxDailyImageCalls: 2000 });
   });
 });
+
+describe("limits: preview settings", () => {
+  it("have sensible defaults and bounds", () => {
+    expect(DEFAULT_LIMITS).toMatchObject({ retryLimit: 2, heroCandidates: 3, previewCandidates: 2, previewBestEffort: true });
+    const { retryLimit, ...rest } = DEFAULT_LIMITS;
+    void retryLimit;
+    expect(LimitsConfig.parse(rest).retryLimit).toBe(2); // older config documents without the new fields still load
+    expect(LimitsConfig.safeParse({ ...DEFAULT_LIMITS, heroCandidates: 5 }).success).toBe(false);
+    expect(LimitsConfig.safeParse({ ...DEFAULT_LIMITS, retryLimit: -1 }).success).toBe(false);
+  });
+});

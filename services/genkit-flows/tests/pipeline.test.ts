@@ -30,7 +30,7 @@ describe("generatePage", () => {
     expect(r.selected).toBeNull();
   });
   it("treats a multi-face result as failing likeness", async () => {
-    const deps = makeDeps({ faces: { compare: async () => ({ similarity: 0.9, faces: 2, largestFaceWidthFraction: 0.2 }) } });
+    const deps = makeDeps({ faces: { compare: async () => ({ similarity: 0.9, faces: 2, largestFaceWidthFraction: 0.2 }), detect: async () => [] } });
     expect((await generatePage(deps, child, template, photos)).selected).toBeNull();
   });
 });

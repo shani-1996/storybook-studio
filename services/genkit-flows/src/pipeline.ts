@@ -50,6 +50,8 @@ export async function generatePage(
   template: PageTemplate,
   photos: ImageRef[],
   extraRefs: ImageRef[] = [],
+  /** A retry passes a different seedBase so it does not repeat the same attempt. */
+  opts: { seedBase?: number } = {},
 ): Promise<PageResult> {
   const prompt = buildPagePrompt(child, template, photos.length, extraRefs.length > 0, deps.style);
   const refs = [...photos, ...extraRefs]; // photos first, hero last (matches the prompt)
@@ -57,7 +59,7 @@ export async function generatePage(
   let blockedCount = 0;
 
   for (let i = 0; i < deps.models.candidatesPerPage; i++) {
-    const cand = await generateOne(deps, prompt, refs, 1000 + i);
+    const cand = await generateOne(deps, prompt, refs, (opts.seedBase ?? 1000) + i);
     if (!cand) {
       blockedCount++;
       continue;

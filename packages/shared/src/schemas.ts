@@ -60,6 +60,15 @@ export const LimitsConfig = z.object({
   maxDailyImageCalls: z.number().int().min(0),
   faceScoreMin: z.number().min(0).max(1),
   judgeScoreMin: z.number().min(0).max(10),
+  /** Extra rounds when no candidate passes. */
+  retryLimit: z.number().int().min(0).max(5).default(2),
+  heroCandidates: z.number().int().min(1).max(4).default(3),
+  previewCandidates: z.number().int().min(1).max(4).default(2),
+  /**
+   * While the quality thresholds are still being tuned, a preview uses the best candidate even if none passes,
+   * and marks it. Turn off once the likeness test has set good thresholds.
+   */
+  previewBestEffort: z.boolean().default(true),
 });
 export type LimitsConfig = z.infer<typeof LimitsConfig>;
 
@@ -72,6 +81,10 @@ export const DEFAULT_LIMITS: LimitsConfig = {
   maxDailyImageCalls: 2000,
   faceScoreMin: 0.4,
   judgeScoreMin: 7,
+  retryLimit: 2,
+  heroCandidates: 3,
+  previewCandidates: 2,
+  previewBestEffort: true,
 };
 
 /** Version of the consent text shown to the parent (text lives in content/ui/en.json). Bump on any wording change. */

@@ -36,7 +36,19 @@ export interface CoverPageSpec {
   widthPx: number;
 }
 
-export type PageSpec = PicturePageSpec | TextPageSpec | CoverPageSpec;
+/** A page of words only: the dedication, the opening verse. Same cream paper as the text pages. */
+export interface MessagePageSpec {
+  kind: "message";
+  /** May be empty (the opening verse has no heading). */
+  title: string;
+  lines: string[];
+  /** Sign-off under the lines, for example "With all our love". */
+  footer?: string;
+  watermark: boolean;
+  widthPx: number;
+}
+
+export type PageSpec = PicturePageSpec | TextPageSpec | CoverPageSpec | MessagePageSpec;
 
 export const escapeHtml = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
@@ -96,6 +108,24 @@ function watermarkHtml(on: boolean) {
 export function buildPage(spec: PageSpec): BuiltPage {
   const w = spec.widthPx;
   const h = pageHeightFor(w);
+
+  if (spec.kind === "message") {
+    const lines = spec.lines.map((l) => `<div>${lineHtml(l)}</div>`).join("");
+    const title = spec.title.trim() ? `<div class="msg-title" data-fit data-base="${(w * TYPE.title * 1.2).toFixed(1)}" data-nowrap>${escapeHtml(spec.title)}</div>` : "";
+    const footer = spec.footer?.trim() ? `<div class="msg-footer" data-fit data-base="${(w * TYPE.motivation).toFixed(1)}">${escapeHtml(spec.footer)}</div>` : "";
+    const html = `<!doctype html><html><head><meta charset="utf-8"><style>${baseCss(w, h)}
+.paper { position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 15%, #fff8e8 0%, #fbeed2 60%, #f5e3bd 100%); }
+.frame { position: absolute; inset: ${(w * 0.03).toFixed(1)}px; border: ${(w * 0.004).toFixed(1)}px dashed rgba(47,111,107,0.45); border-radius: ${(w * 0.03).toFixed(1)}px; }
+.col { position: absolute; left: ${pct(0.14)}; right: ${pct(0.14)}; top: ${pct(0.12)}; bottom: ${pct(0.12)}; display: flex; flex-direction: column; justify-content: center; gap: ${(w * 0.03).toFixed(1)}px; text-align: center; }
+.msg-title { font-family: "Fredoka", "Noto Sans Devanagari", sans-serif; font-weight: 600; color: #c0612b; white-space: nowrap; }
+.msg-body { font-size: ${(w * TYPE.fact).toFixed(1)}px; }
+.msg-footer { font-family: "Fredoka", "Noto Sans Devanagari", sans-serif; font-weight: 500; color: #2f6f6b; }
+</style></head><body><div class="page" data-kind="message">
+<div class="paper"></div><div class="frame"></div>
+<div class="col">${title}<div class="fit msg-body" data-fit data-base="${(w * TYPE.fact).toFixed(1)}">${lines}</div>${footer}</div>
+${watermarkHtml(spec.watermark)}</div></body></html>`;
+    return { html, width: w, height: h };
+  }
 
   if (spec.kind === "text") {
     const html = `<!doctype html><html><head><meta charset="utf-8"><style>${baseCss(w, h)}

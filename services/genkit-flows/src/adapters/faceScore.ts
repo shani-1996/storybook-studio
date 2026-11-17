@@ -16,5 +16,9 @@ export function createFaceScoreClient(baseUrl: string): FaceScorer {
     async compare({ image, references }) {
       return post("/compare", { image: b64(image), references: references.map(b64) });
     },
+    async detect(image) {
+      const r = await post<{ boxes: { x: number; y: number; w: number; h: number }[] }>("/detect", { image: b64(image) });
+      return r.boxes.map((b) => ({ x: b.x, y: b.y, w: b.w, h: b.h }));
+    },
   };
 }
