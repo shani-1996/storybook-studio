@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
-import { defineSecret, defineString } from "firebase-functions/params";
+import { defineSecret } from "firebase-functions/params";
 import { logger, setGlobalOptions } from "firebase-functions/v2";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { onObjectFinalized } from "firebase-functions/v2/storage";
@@ -12,10 +12,12 @@ import { sharpNormaliser } from "./photoCheck/image.js";
 initializeApp();
 getFirestore().settings({ ignoreUndefinedProperties: true });
 
-// Dev defaults (not secrets). Another environment overrides them with functions/.env.<projectId>.
-const UPLOADS_BUCKET = defineString("UPLOADS_BUCKET", { default: "book-dev-env-uploads" });
-const FACE_SCORE_URL = defineString("FACE_SCORE_URL", { default: "https://face-score-420016114828.asia-south1.run.app" });
-const SERVICE_ACCOUNT = defineString("FUNCTIONS_SERVICE_ACCOUNT", { default: "sa-functions@book-dev-env.iam.gserviceaccount.com" });
+// Dev values (not secrets). Another environment sets these variables when it deploys.
+// Plain constants rather than Firebase params: the deploy tool asks for a value for every param in
+// non-interactive mode, even ones with a default.
+const UPLOADS_BUCKET = process.env["UPLOADS_BUCKET"] ?? "book-dev-env-uploads";
+const FACE_SCORE_URL = process.env["FACE_SCORE_URL"] ?? "https://face-score-420016114828.asia-south1.run.app";
+const SERVICE_ACCOUNT = process.env["FUNCTIONS_SERVICE_ACCOUNT"] ?? "sa-functions@book-dev-env.iam.gserviceaccount.com";
 const IP_HASH_PEPPER = defineSecret("IP_HASH_PEPPER");
 
 setGlobalOptions({ region: "asia-south1", maxInstances: 10 });
@@ -45,7 +47,7 @@ export const onPhotoUploaded = onObjectFinalized(
         blobs: gcsBlobs(event.data.bucket),
         images: sharpNormaliser,
         vision: visionFaces(),
-        embedder: faceScoreEmbedder(FACE_SCORE_URL.value()),
+        embedder: faceScoreEmbedder(FACE_SCORE_URL),
         log,
         now: () => Date.now(),
       },

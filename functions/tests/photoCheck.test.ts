@@ -123,6 +123,17 @@ describe("failures show the right reason", () => {
     }
   });
 
+  it("logs which step failed and the error type, never the error message", async () => {
+    for (const [kind, step] of [["visionerror", "vision"], ["embederror", "embed"]] as const) {
+      const ctx = makeDeps();
+      ctx.books.seed(BOOK);
+      await upload(ctx, "photo1", photo(kind));
+      const entry = ctx.log.entries.find((e) => e.message === "check step failed");
+      expect(entry?.fields).toMatchObject({ bookId: BOOK, photoId: "photo1", step, errorName: "Error" });
+      expect(JSON.stringify(ctx.log.entries)).not.toMatch(/vision down|face service down/);
+    }
+  });
+
   it("every failure code the handler can produce has parent-facing copy", async () => {
     const copy = (await import("../../content/ui/en.json", { with: { type: "json" } })).default.photoCheck.reasons as Record<string, string>;
     for (const r of PHOTO_FAIL_REASONS) expect(copy[r]?.length ?? 0).toBeGreaterThan(10);

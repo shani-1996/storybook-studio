@@ -28,3 +28,27 @@ resource "google_cloud_run_v2_service_iam_member" "functions_invoke_face_score" 
   role     = "roles/run.invoker"
   member   = "serviceAccount:${google_service_account.sa["functions"].email}"
 }
+
+# Cloud Storage triggers check that the bucket exists before they are created. That check needs the
+# bucket-level "look up this bucket" right (storage.buckets.get), which objectAdmin does not include.
+# legacyBucketReader adds only that (plus listing object names) and only on the uploads bucket.
+resource "google_storage_bucket_iam_member" "uploads_bucket_lookup" {
+  for_each = {
+    functions = "serviceAccount:${google_service_account.sa["functions"].email}"
+    eventarc  = "serviceAccount:service-${data.google_project.this.number}@gcp-sa-eventarc.iam.gserviceaccount.com"
+  }
+  bucket = google_storage_bucket.book["uploads"].name
+  role   = "roles/storage.legacyBucketReader"
+  member = each.value
+}
+
+# The storage trigger delivers events to the photo-check function's Cloud Run service as sa-functions, so that
+# account must be allowed to call that one service. Scoped to this service only (the deploy tool would otherwise
+# suggest project-wide run.invoker for the default compute account, which is much broader).
+resource "google_cloud_run_v2_service_iam_member" "functions_invoke_photo_check" {
+  project  = var.project_id
+  location = var.region
+  name     = "onphotouploaded"
+  role     = "roles/run.invoker"
+  member   = "serviceAccount:${google_service_account.sa["functions"].email}"
+}

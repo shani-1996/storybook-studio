@@ -41,8 +41,9 @@ Dev project ID: `book-dev-env` (spec default `storybook-dev` was not used). Regi
 Project number, Firebase web config, App Check site key, domain name, GitHub repo URL, SMTP provider, printer, and confirmation that each secret exists.
 
 ## H. Milestone 3 owner actions
-- [ ] Create the secret `IP_HASH_PEPPER` (random, 48+ bytes; never paste it anywhere): `firebase functions:secrets:set IP_HASH_PEPPER --project book-dev-env`
-- [ ] Approve and apply `infra/terraform/functions.tf` (3 IAM grants for `sa-functions`, plus secret access): `terraform apply -var project_id=book-dev-env`
-- [ ] Deploy the functions to dev: `firebase deploy --only functions --project book-dev-env`
+- [x] Secret `IP_HASH_PEPPER` created by the owner (2026-11-17)
+- [x] `infra/terraform/functions.tf` applied (narrow IAM grants for `sa-functions`, the trigger and the secret)
+- [x] Functions deployed to dev and verified end to end (11 of 11 checks); see `docs/decisions.md`
+- [ ] Try the pages in a real browser against dev (sign in, details, photos, consent) and report anything odd
 - [ ] Decide the face-model licence question (see `docs/decisions.md`) before launch
 - [ ] Lawyer review of the consent text (draft in `content/ui/en.json`)

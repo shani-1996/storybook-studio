@@ -4,6 +4,7 @@ import { getStorage } from "firebase-admin/storage";
 import { GoogleAuth } from "google-auth-library";
 import { assertTransition, auditForTransition, type BookStatus, type Likelihood, type VisionFace } from "@gycb/shared";
 import type { ConsentBook, ConsentStore } from "../consent/handler.js";
+import { withRetry } from "../retry.js";
 import type { BlobStore, BookRecord, BookStore, Embedder, FaceDetector, PhotoRecord } from "../photoCheck/ports.js";
 
 /** Cloud Storage: the private uploads bucket. */
@@ -92,12 +93,15 @@ export function faceScoreEmbedder(serviceUrl: string): Embedder {
   return {
     async embed(jpeg) {
       const client = await auth.getIdTokenClient(serviceUrl);
-      const res = await client.request<{ embedding: number[] }>({
-        url: `${serviceUrl}/embed`,
-        method: "POST",
-        data: { image: jpeg.toString("base64") },
-        timeout: 90_000,
-      });
+      // A cold or busy instance may answer 503 for a moment: try again before giving up on the photo.
+      const res = await withRetry(() =>
+        client.request<{ embedding: number[] }>({
+          url: `${serviceUrl}/embed`,
+          method: "POST",
+          data: { image: jpeg.toString("base64") },
+          timeout: 90_000,
+        }),
+      );
       return res.data.embedding;
     },
   };

@@ -7,6 +7,7 @@ import {
   type PhotoCheckConfig,
   type PhotoFailReason,
 } from "@gycb/shared";
+import { describeError } from "../retry.js";
 import type { BlobStore, BookStore, Embedder, FaceDetector, ImageNormaliser, PhotoRecord } from "./ports.js";
 
 export const PHOTO_IDS = ["photo1", "photo2", "photo3"] as const;
@@ -71,7 +72,8 @@ export async function checkPhoto(deps: PhotoCheckDeps, bookId: string, photoId: 
   let normalised;
   try {
     normalised = await deps.images.normalise(await blobs.download(raw), cfg.maxLongEdgePx);
-  } catch {
+  } catch (e) {
+    log.warn("check step failed", { bookId, photoId, step: "read", ...describeError(e) });
     return failed("UNREADABLE");
   }
 
@@ -79,7 +81,8 @@ export async function checkPhoto(deps: PhotoCheckDeps, bookId: string, photoId: 
   let faces;
   try {
     faces = await deps.vision.detectFaces(normalised.jpeg);
-  } catch {
+  } catch (e) {
+    log.warn("check step failed", { bookId, photoId, step: "vision", ...describeError(e) });
     return failed("CHECK_FAILED");
   }
   const verdict = evaluateFaces(faces, normalised.width, cfg);
@@ -89,7 +92,8 @@ export async function checkPhoto(deps: PhotoCheckDeps, bookId: string, photoId: 
   let embedding: number[];
   try {
     embedding = await deps.embedder.embed(normalised.jpeg);
-  } catch {
+  } catch (e) {
+    log.warn("check step failed", { bookId, photoId, step: "embed", ...describeError(e) });
     return failed("CHECK_FAILED");
   }
 
