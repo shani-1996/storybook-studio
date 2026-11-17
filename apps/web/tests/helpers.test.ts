@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MAX_PHOTO_BYTES, precheckPhoto, safeNext, titlePreview, uploadContentType } from "../lib/helpers";
+import { MAX_PHOTO_BYTES, previewView, precheckPhoto, safeNext, titlePreview, uploadContentType } from "../lib/helpers";
 
 describe("titlePreview", () => {
   it("shows the name as typed, trimmed", () => {
@@ -58,5 +58,28 @@ describe("uploadContentType", () => {
     expect(uploadContentType({ name: "a.HEIC", type: "" })).toBe("image/heic");
     expect(uploadContentType({ name: "a.png", type: "" })).toBe("image/png");
     expect(uploadContentType({ name: "a.jpeg", type: "" })).toBe("image/jpeg");
+  });
+});
+
+describe("previewView", () => {
+  const view = (status: string, previewBlocked?: string | null) => previewView({ status, previewBlocked });
+  it("shows the book once the preview is ready", () => {
+    expect(view("preview_ready")).toBe("ready");
+  });
+  it("shows progress while the job is queued or running", () => {
+    expect(view("photos_ready")).toBe("working");
+    expect(view("preview_generating")).toBe("working");
+  });
+  it("explains each way a preview can stop", () => {
+    expect(view("preview_failed")).toBe("failed");
+    expect(view("generation_blocked")).toBe("blocked");
+    expect(view("photos_ready", "not_invited")).toBe("not_invited");
+    expect(view("photos_ready", "user_limit")).toBe("limit_user");
+    expect(view("photos_ready", "daily_cap")).toBe("limit_daily");
+    expect(view("photos_ready", "image_cap")).toBe("limit_daily");
+  });
+  it("sends people who have not finished their photos back", () => {
+    expect(view("draft")).toBe("not_ready");
+    expect(view("photos_checking")).toBe("not_ready");
   });
 });

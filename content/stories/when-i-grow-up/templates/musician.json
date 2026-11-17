@@ -1,0 +1,12 @@
+{
+  "id": "musician",
+  "titleWord": "MUSICIAN",
+  "textSide": "right",
+  "scene": "child playing a small guitar, floating musical notes drawn as simple swirls (no letters), warm purple and gold watercolour wash",
+  "outfit": {
+    "girl": "colourful waistcoat",
+    "boy": "colourful waistcoat",
+    "neutral": "colourful waistcoat"
+  },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

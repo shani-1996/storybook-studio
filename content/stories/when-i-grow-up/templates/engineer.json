@@ -1,0 +1,12 @@
+{
+  "id": "engineer",
+  "titleWord": "ENGINEER",
+  "textSide": "right",
+  "scene": "child in a yellow hard hat and hi-vis vest holding a rolled blueprint, beside a friendly toy bridge made of blocks, warm orange watercolour wash",
+  "outfit": {
+    "girl": "yellow hard hat and hi-vis vest",
+    "boy": "yellow hard hat and hi-vis vest",
+    "neutral": "yellow hard hat and hi-vis vest"
+  },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

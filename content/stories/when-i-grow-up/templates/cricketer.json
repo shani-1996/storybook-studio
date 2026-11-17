@@ -1,0 +1,12 @@
+{
+  "id": "cricketer",
+  "titleWord": "CRICKETER",
+  "textSide": "right",
+  "scene": "child in white cricket clothes holding a small bat on a sunny green field, stumps behind, clear blue sky wash",
+  "outfit": {
+    "girl": "white cricket shirt and trousers with a sun hat",
+    "boy": "white cricket shirt and trousers with a sun hat",
+    "neutral": "white cricket shirt and trousers with a sun hat"
+  },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

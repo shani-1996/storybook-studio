@@ -1,0 +1,12 @@
+{
+  "id": "firefighter",
+  "titleWord": "FIREFIGHTER",
+  "textSide": "right",
+  "scene": "child in a red firefighter helmet and jacket beside a friendly red fire engine, sunny sky wash, no flames and no smoke anywhere",
+  "outfit": {
+    "girl": "red helmet and jacket with reflective stripes",
+    "boy": "red helmet and jacket with reflective stripes",
+    "neutral": "red helmet and jacket with reflective stripes"
+  },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

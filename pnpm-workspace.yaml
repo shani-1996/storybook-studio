@@ -4,6 +4,7 @@ packages:
   - "services/genkit-flows"
   - "packages/*"
   - "services/render"
+  - "services/preview-worker"
   - "tests/*"
 allowBuilds:
   '@firebase/util': true

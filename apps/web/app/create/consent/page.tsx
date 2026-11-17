@@ -3,7 +3,7 @@
 import { doc, onSnapshot } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { useRequireUser } from "../../../components/auth";
 import { Button, ErrorText, Page } from "../../../components/ui";
@@ -18,6 +18,7 @@ interface BookView {
 
 function Consent() {
   const { user, loading } = useRequireUser();
+  const router = useRouter();
   const bookId = useSearchParams().get("book");
   const [book, setBook] = useState<BookView | null>(null);
   const [accepted, setAccepted] = useState(false);
@@ -32,6 +33,11 @@ function Consent() {
       () => setError("We could not open this book."),
     );
   }, [user, bookId]);
+
+  const consented = book?.consentVersion === CONSENT_VERSION;
+  useEffect(() => {
+    if (consented && bookId) router.replace(`/book/preview?book=${bookId}`);
+  }, [consented, bookId, router]);
 
   async function submit() {
     if (!bookId) return;
@@ -57,9 +63,7 @@ function Consent() {
     <Page title="Before we start">
       {error && <ErrorText>{error}</ErrorText>}
       {done ? (
-        <p role="status" className="rounded-lg bg-teal-100 px-4 py-3 text-teal-950">
-          Thank you. Your consent is saved. Creating your free preview is the next step, and it is coming soon.
-        </p>
+        <p role="status">Thank you. Opening your preview...</p>
       ) : !photosReady ? (
         <p>
           Please finish adding and checking your photos first. <Link href={`/create/photos?book=${bookId}`} className="underline">Back to photos</Link>

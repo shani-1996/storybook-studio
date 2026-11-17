@@ -8,6 +8,8 @@ import { ConsentError, recordConsent } from "./consent/handler.js";
 import { faceScoreEmbedder, FirestoreBooks, gcsBlobs, visionFaces } from "./adapters/google.js";
 import { checkPhoto, parseRawPhotoPath, type Logger } from "./photoCheck/handler.js";
 import { sharpNormaliser } from "./photoCheck/image.js";
+import { previewQueue } from "./preview/queue.js";
+import { startPreview, type AccessConfig } from "./preview/start.js";
 
 initializeApp();
 getFirestore().settings({ ignoreUndefinedProperties: true });
@@ -18,6 +20,8 @@ getFirestore().settings({ ignoreUndefinedProperties: true });
 const UPLOADS_BUCKET = process.env["UPLOADS_BUCKET"] ?? "book-dev-env-uploads";
 const FACE_SCORE_URL = process.env["FACE_SCORE_URL"] ?? "https://face-score-420016114828.asia-south1.run.app";
 const SERVICE_ACCOUNT = process.env["FUNCTIONS_SERVICE_ACCOUNT"] ?? "sa-functions@book-dev-env.iam.gserviceaccount.com";
+const PROJECT_ID = process.env["GCLOUD_PROJECT"] ?? "book-dev-env";
+const PREVIEW_WORKER_URL = process.env["PREVIEW_WORKER_URL"] ?? "https://preview-worker-420016114828.asia-south1.run.app";
 const IP_HASH_PEPPER = defineSecret("IP_HASH_PEPPER");
 
 setGlobalOptions({ region: "asia-south1", maxInstances: 10 });
@@ -64,12 +68,14 @@ export const submitConsent = onCall(
     const forwarded = request.rawRequest.headers["x-forwarded-for"];
     const ip = (Array.isArray(forwarded) ? forwarded[0] : forwarded?.split(",")[0])?.trim() ?? request.rawRequest.ip ?? "";
     try {
-      return await recordConsent(
+      const result = await recordConsent(
         { store: new FirestoreBooks(), pepper: IP_HASH_PEPPER.value(), now: () => Date.now() },
         request.auth?.uid,
         request.data,
         ip,
       );
+      await beginPreview((request.data as { bookId: string }).bookId, request.auth?.token.email);
+      return result;
     } catch (e) {
       if (e instanceof ConsentError) throw new HttpsError(e.code, e.message);
       logger.error("consent failed unexpectedly");
@@ -77,3 +83,28 @@ export const submitConsent = onCall(
     }
   },
 );
+
+const db = () => getFirestore();
+
+/** Consent is saved: start the free preview (or record that this account is not invited yet). */
+async function beginPreview(bookId: string, email: string | undefined): Promise<void> {
+  const queue = previewQueue({
+    project: PROJECT_ID,
+    location: "asia-south1",
+    queue: "page-gen",
+    workerUrl: PREVIEW_WORKER_URL,
+    invokerServiceAccount: SERVICE_ACCOUNT,
+  });
+  await startPreview(
+    {
+      getAccess: async (): Promise<AccessConfig> => {
+        const d = (await db().doc("config/access").get()).data();
+        return { open: d?.["open"] === true, testerEmails: Array.isArray(d?.["testerEmails"]) ? (d["testerEmails"] as string[]) : [] };
+      },
+      enqueue: (id) => queue.enqueue(id),
+      markBlocked: async (id, reason) => void (await db().doc(`books/${id}`).update({ previewBlocked: reason })),
+    },
+    bookId,
+    email,
+  );
+}

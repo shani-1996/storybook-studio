@@ -1,0 +1,12 @@
+{
+  "id": "veterinarian",
+  "titleWord": "VETERINARIAN",
+  "textSide": "right",
+  "scene": "child in a soft blue scrub top holding a toy stethoscope, gently cuddling a calm fluffy puppy with a kitten nearby, light teal watercolour wash",
+  "outfit": {
+    "girl": "blue scrub top",
+    "boy": "blue scrub top",
+    "neutral": "blue scrub top"
+  },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "photographer",
+  "titleWord": "PHOTOGRAPHER",
+  "textSide": "right",
+  "scene": "child holding a toy camera up to take a picture, a bright scene of balloons and flowers behind, soft peach watercolour wash",
+  "outfit": {
+    "girl": "denim jacket with a camera strap",
+    "boy": "denim jacket with a camera strap",
+    "neutral": "denim jacket with a camera strap"
+  },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

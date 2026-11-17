@@ -1,0 +1,12 @@
+{
+  "id": "teacher",
+  "titleWord": "TEACHER",
+  "textSide": "right",
+  "scene": "child standing by a blackboard with a pointer, holding a picture book, a few drawn shapes and stars on the board (no letters or numbers), cosy classroom wash",
+  "outfit": {
+    "girl": "cardigan and round glasses",
+    "boy": "cardigan and round glasses",
+    "neutral": "cardigan and round glasses"
+  },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

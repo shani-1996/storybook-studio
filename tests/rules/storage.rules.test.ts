@@ -109,12 +109,44 @@ describe("reads and other paths", () => {
       `books/${BOOK}/hero/hero.png`,
       `books/${BOOK}/pages/1/c1.png`,
       `books/${BOOK}/print.pdf`,
-      `books/${BOOK}/preview/1.webp`,
       "random/file.txt",
     ]) {
       await assertFails(uploadBytes(ref(ownerStorage(), path), small, jpeg));
       await assertFails(getBytes(ref(ownerStorage(), path)));
       await assertFails(uploadBytes(ref(adminStorage(), path), small, jpeg));
     }
+  });
+});
+
+describe("preview pages", () => {
+  const page = (s: ReturnType<typeof ownerStorage>, n = "1.webp") => ref(s, `books/${BOOK}/preview/${n}`);
+  const seed = async (status: string) =>
+    env.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), "books", BOOK), { ownerUid: OWNER, status });
+      await uploadBytes(page(ctx.storage()), small, { contentType: "image/webp" });
+    });
+
+  it("the owner can read a page once the preview is ready", async () => {
+    await seed("preview_ready");
+    await assertSucceeds(getBytes(page(ownerStorage())));
+  });
+  it("nobody can read a page while the preview is still being made or has failed", async () => {
+    for (const status of ["photos_ready", "preview_generating", "preview_failed"]) {
+      await seed(status);
+      await assertFails(getBytes(page(ownerStorage())));
+    }
+  });
+  it("another user, a signed-out visitor and even the owner cannot write a page", async () => {
+    await seed("preview_ready");
+    await assertFails(getBytes(page(otherStorage())));
+    await assertFails(getBytes(page(anonStorage())));
+    await assertFails(uploadBytes(page(ownerStorage(), "2.webp"), small, { contentType: "image/webp" }));
+  });
+  it("only numbered webp files are readable", async () => {
+    await seed("preview_ready");
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await uploadBytes(page(ctx.storage(), "secret.txt"), small, { contentType: "text/plain" });
+    });
+    await assertFails(getBytes(page(ownerStorage(), "secret.txt")));
   });
 });

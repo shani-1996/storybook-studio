@@ -1,11 +1,11 @@
 import type { FaceScorer, ImageRef } from "../ports.js";
 
 /** Thin HTTP client for the Python face-score service (local or Cloud Run). */
-export function createFaceScoreClient(baseUrl: string): FaceScorer {
+export function createFaceScoreClient(baseUrl: string, extraHeaders?: () => Promise<Record<string, string>>): FaceScorer {
   async function post<T>(path: string, body: unknown): Promise<T> {
     const r = await fetch(`${baseUrl}${path}`, {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: { "content-type": "application/json", ...(extraHeaders ? await extraHeaders() : {}) },
       body: JSON.stringify(body),
     });
     if (!r.ok) throw new Error(`face-score ${path} failed: ${r.status}`);

@@ -1,0 +1,12 @@
+{
+  "id": "explorer",
+  "titleWord": "EXPLORER",
+  "textSide": "right",
+  "scene": "child in a sun hat and small backpack holding a magnifying glass at the edge of a friendly forest, a tiny map in the other hand (no text), leafy green and gold watercolour wash",
+  "outfit": {
+    "girl": "sun hat, explorer vest and a small backpack",
+    "boy": "sun hat, explorer vest and a small backpack",
+    "neutral": "sun hat, explorer vest and a small backpack"
+  },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

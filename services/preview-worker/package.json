@@ -1,0 +1,25 @@
+{
+  "name": "@gycb/preview-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "build": "node build.mjs",
+    "start": "node dist/server.mjs"
+  },
+  "dependencies": {
+    "firebase-admin": "^14.5.1",
+    "google-auth-library": "^10.9.1",
+    "puppeteer-core": "^25.17.0",
+    "zod": "^4.6.7",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}

@@ -23,5 +23,25 @@
     "version": "2026-11-draft-1",
     "text": "I am this child’s parent or legal guardian, or I have their permission to create this book. I agree that the photos I upload will be used only to create this personalised book, processed by our cloud and AI providers on our behalf, and deleted within 30 days after delivery or sooner if I ask.",
     "draftNote": "Draft wording: must be reviewed by the owner’s lawyer against the DPDP Act before launch."
+  },
+  "preview": {
+    "title": "Your free preview",
+    "working": "We are drawing your child’s book. This usually takes a few minutes. You can keep this page open, or come back later.",
+    "steps": [
+      "Checking your photos",
+      "Drawing the first pictures",
+      "Adding the words and the watermark"
+    ],
+    "failed": "Something went wrong while making your preview. This did not use up your free preview. Please try again in a little while.",
+    "blocked": "We could not make a picture that we are happy with. Our team has been told and will look at it. This did not use up your free preview.",
+    "notInvited": "Thank you. Your photos and consent are saved. We are only letting a few families in at first, and we will email you as soon as it is your turn.",
+    "limitUser": "You have already used your free preview.",
+    "limitDaily": "We are very busy today and cannot start another preview. Please come back tomorrow.",
+    "readyHeading": "Here is your preview",
+    "readyHint": "Drag a page corner or tap the arrows to turn the pages. The watermark goes away in the printed book.",
+    "loadingPages": "Opening your book...",
+    "pagesError": "We could not open your pages. Please reload the page.",
+    "prev": "Previous page",
+    "next": "Next page"
   }
 }

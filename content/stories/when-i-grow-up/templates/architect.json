@@ -1,0 +1,12 @@
+{
+  "id": "architect",
+  "titleWord": "ARCHITECT",
+  "textSide": "right",
+  "scene": "child in a smart shirt holding a small model house and a pencil, a drawing table with a simple house plan (no text), soft blue-grey watercolour wash",
+  "outfit": {
+    "girl": "smart shirt with rolled-up sleeves",
+    "boy": "smart shirt with rolled-up sleeves",
+    "neutral": "smart shirt with rolled-up sleeves"
+  },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

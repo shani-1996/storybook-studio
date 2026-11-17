@@ -1,0 +1,12 @@
+{
+  "id": "footballer",
+  "titleWord": "FOOTBALLER",
+  "textSide": "right",
+  "scene": "child in a bright football kit with a ball at their feet on a sunny grass pitch, simple goal behind, fresh green watercolour wash",
+  "outfit": {
+    "girl": "plain bright football shirt and shorts, no logos, no numbers",
+    "boy": "plain bright football shirt and shorts, no logos, no numbers",
+    "neutral": "plain bright football shirt and shorts, no logos, no numbers"
+  },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

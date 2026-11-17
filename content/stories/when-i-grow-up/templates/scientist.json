@@ -1,0 +1,12 @@
+{
+  "id": "scientist",
+  "titleWord": "SCIENTIST",
+  "textSide": "right",
+  "scene": "child in a white lab coat and safety goggles pushed up on the head, holding a bubbling coloured flask, tidy bench with a microscope, soft green watercolour wash",
+  "outfit": {
+    "girl": "white lab coat with goggles",
+    "boy": "white lab coat with goggles",
+    "neutral": "white lab coat with goggles"
+  },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

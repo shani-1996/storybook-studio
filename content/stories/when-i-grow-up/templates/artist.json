@@ -1,0 +1,12 @@
+{
+  "id": "artist",
+  "titleWord": "ARTIST",
+  "textSide": "right",
+  "scene": "child in a paint-splashed smock holding a big paintbrush beside an easel with a colourful abstract painting, rainbow watercolour splashes behind",
+  "outfit": {
+    "girl": "paint-splashed smock and a beret",
+    "boy": "paint-splashed smock and a beret",
+    "neutral": "paint-splashed smock and a beret"
+  },
+  "composition": "child on the left two-thirds, right third kept light and empty for text"
+}

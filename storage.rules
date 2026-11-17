@@ -2,7 +2,8 @@ rules_version = '2';
 
 // Storage rules (spec sections 5 and 10).
 // The browser may only upload up to 3 photos into its own book while the book is still editable.
-// Nothing is ever readable from the browser: reads use short-lived signed URLs issued by a Function.
+// Photos are never readable from the browser. The owner may read the watermarked preview pages (small WebP files in the
+// default bucket) once the preview is ready; the checks run server-side in these rules (Decision: docs/decisions.md).
 // Generated images and print PDFs live in separate buckets with no client access at all.
 service firebase.storage {
   match /b/{bucket}/o {
@@ -27,6 +28,15 @@ service firebase.storage {
 
       allow delete: if ownsEditableBook(bookId);
       allow read: if false;
+    }
+
+    // Watermarked preview pages. Written only by the preview worker; read by the owner of a finished preview.
+    match /books/{bookId}/preview/{file} {
+      allow read: if request.auth != null
+        && bookDoc(bookId).ownerUid == request.auth.uid
+        && bookDoc(bookId).status in ["preview_ready", "paid"]
+        && file.matches("[0-9]+[.]webp");
+      allow write: if false;
     }
 
     match /{allPaths=**} {
