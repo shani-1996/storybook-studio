@@ -10,7 +10,7 @@ export const FirstName = z
   .regex(/^\p{L}[\p{L}\p{M}'’ -]*$/u, "letters only");
 
 export const Gender = z.enum(["girl", "boy", "neutral"]); // neutral = prefer not to say (they/them)
-export const Age = z.number().int().min(3).max(7);
+export const Age = z.number().int().min(1).max(7);
 export const Relationship = z.enum(["parent", "grandparent", "aunt_uncle", "sibling", "family_friend", "other"]);
 
 export const ChildDetails = z.object({ firstName: FirstName, gender: Gender, age: Age });

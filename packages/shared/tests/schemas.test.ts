@@ -29,9 +29,9 @@ describe("FirstName", () => {
 });
 
 describe("Age", () => {
-  it("accepts 3 to 7 only", () => {
-    for (const a of [3, 4, 5, 6, 7]) expect(Age.safeParse(a).success).toBe(true);
-    for (const a of [0, 1, 2, 8, 3.5]) expect(Age.safeParse(a).success).toBe(false);
+  it("accepts 1 to 7 only", () => {
+    for (const a of [1, 2, 3, 4, 5, 6, 7]) expect(Age.safeParse(a).success).toBe(true);
+    for (const a of [0, -1, 8, 3.5, 1.5]) expect(Age.safeParse(a).success).toBe(false);
   });
 });
 

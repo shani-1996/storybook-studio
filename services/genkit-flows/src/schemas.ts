@@ -6,7 +6,7 @@ export type Gender = z.infer<typeof Gender>;
 export const ChildInput = z.object({
   firstName: z.string().min(1).max(20),
   gender: Gender,
-  age: z.number().int().min(3).max(7),
+  age: z.number().int().min(1).max(7),
 });
 export type ChildInput = z.infer<typeof ChildInput>;
 

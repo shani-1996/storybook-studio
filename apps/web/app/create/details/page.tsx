@@ -46,7 +46,7 @@ function Details() {
       for (const issue of child.error.issues) {
         const field = String(issue.path[0] ?? "firstName");
         next[field] =
-          field === "firstName" ? "Please enter 1 to 20 letters." : field === "gender" ? "Please choose one." : "Please choose an age from 3 to 7.";
+          field === "firstName" ? "Please enter 1 to 20 letters." : field === "gender" ? "Please choose one." : "Please choose an age from 1 to 7.";
       }
     }
     if (!rel.success) next["relationship"] = "Please choose one.";
@@ -105,7 +105,7 @@ function Details() {
           <label htmlFor="age" className="font-semibold">Age</label>
           <select id="age" value={age} onChange={(e) => setAge(e.target.value)} aria-invalid={!!errors["age"]} className={inputClass}>
             <option value="">Choose...</option>
-            {[3, 4, 5, 6, 7].map((n) => (
+            {[1, 2, 3, 4, 5, 6, 7].map((n) => (
               <option key={n} value={n}>{n}</option>
             ))}
           </select>

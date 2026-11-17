@@ -27,7 +27,7 @@ service cloud.firestore {
         && c.keys().hasAll(['firstName', 'gender', 'age'])
         && c.firstName is string && c.firstName.size() >= 1 && c.firstName.size() <= 20
         && c.gender in ['girl', 'boy', 'neutral']
-        && c.age is int && c.age >= 3 && c.age <= 7;
+        && c.age is int && c.age >= 1 && c.age <= 7;
     }
 
     function validProfessions(p) {

@@ -96,13 +96,20 @@ describe("books: create", () => {
     assertFails(setDoc(doc(owner(), "books", "n1"), { ...validDraft(), createdAt: new Date(2000, 1, 1) })));
   it("rejects bad child data", async () => {
     const bad = (child: unknown) => setDoc(doc(owner(), "books", "nx"), { ...validDraft(), child });
-    await assertFails(bad({ firstName: "Zoe", gender: "girl", age: 2 }));
+    await assertFails(bad({ firstName: "Zoe", gender: "girl", age: 0 }));
     await assertFails(bad({ firstName: "Zoe", gender: "girl", age: 8 }));
     await assertFails(bad({ firstName: "", gender: "girl", age: 5 }));
     await assertFails(bad({ firstName: "A".repeat(21), gender: "girl", age: 5 }));
     await assertFails(bad({ firstName: "Zoe", gender: "x", age: 5 }));
     await assertFails(bad({ firstName: "Zoe", gender: "girl", age: 5, school: "s" }));
     await assertFails(bad({ firstName: "Zoe", gender: "girl", age: 5.5 }));
+  });
+  it("accepts the youngest and oldest ages (1 and 7)", async () => {
+    for (const [i, age] of [1, 7].entries()) {
+      await assertSucceeds(setDoc(doc(owner(), "books", `age${i}`), { ...validDraft(), child: { firstName: "Zoe", gender: "girl", age } }));
+    }
+    await assertFails(setDoc(doc(owner(), "books", "age-low"), { ...validDraft(), child: { firstName: "Zoe", gender: "girl", age: 0 } }));
+    await assertFails(setDoc(doc(owner(), "books", "age-high"), { ...validDraft(), child: { firstName: "Zoe", gender: "girl", age: 8 } }));
   });
   it("rejects wrong profession count and long dedication", async () => {
     await assertFails(setDoc(doc(owner(), "books", "n1"), { ...validDraft(), professions: PROFESSIONS.slice(0, 7) }));

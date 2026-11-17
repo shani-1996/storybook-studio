@@ -96,3 +96,11 @@ Models run on identical photos. Ratings are the owner's 1-5 "looks like this chi
 - Bugs found only by the dev test, now fixed: missing `@google-cloud/storage` dependency (function would have crashed on its first file); face-score ran out of memory with 3 photos at once and returned 503 (more memory, one request per instance, retry on temporary errors in the function); handler now logs the failing step and error type (never messages or photo data).
 - NOT verified: the browser pages (built and type-checked, never exercised in a browser; sign-in needs a real inbox or Google account); the Storage security rules against the real bucket from a signed-in browser (covered by 59 emulator tests only); the successful consent path in dev (needs a signed-in user; covered by unit tests; only the signed-out rejection was checked in dev).
 - Function container images older than 1 day are deleted automatically (clean-up policy set by `--force` on deploy).
+
+## 2026-11-17: Age range widened to 1 to 7 (owner decision; the spec says 3 to 7)
+- Changed everywhere an age is enforced: shared schema, Firestore security rules (deployed to dev), the genkit flow schema, the web form (dropdown 1 to 7) and `story.json` (`minAge` 1). Tests updated, plus a boundary test for ages 1 and 7 (0 and 8 are rejected).
+- Known consequences to check before launch:
+  - Toddler faces change quickly and match each other less well than older children's faces. The same-child threshold (cosine 0.45) and the likeness thresholds were tuned on very little data and may reject good toddler photos or accept wrong ones. Re-test with real toddler photo sets.
+  - The Milestone 1 likeness gate (average 4.0 or more, no set below 3.0) now needs toddlers in the test set, not only ages 3 to 7.
+  - Prompts and outfits were written for older children; check a one-year-old in a doctor's coat or pilot's uniform looks right and age-appropriate.
+  - Face-scoring accuracy for infants is generally lower; the licence question for the face model still applies.
