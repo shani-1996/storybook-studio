@@ -3,6 +3,7 @@ packages:
   - "functions"
   - "services/genkit-flows"
   - "packages/*"
+  - "services/render"
   - "tests/*"
 allowBuilds:
   '@firebase/util': true

@@ -126,3 +126,12 @@ Owner decided: ONE illustration page per profession, with a short interesting wr
 | Data retention | Source photos deleted 30 days after delivery or on request (as the spec proposes). OWNER: lawyer to confirm. | |
 | Trim size | 11 x 8.5 in landscape hardcover (see the earlier recommendation); final once the printer is chosen | |
 | Profession defaults | First eight in the spec's list: doctor, pilot, astronaut, scientist, artist, chef, footballer, cricketer | |
+
+## 2026-11-17: Page renderer (services/render), milestone 4 stage 1
+- Renders cover, picture and text pages with a real headless Chrome (puppeteer-core) at 11 x 8.5 in proportions, using the bundled free fonts (Andika, Fredoka, Noto Sans Devanagari as fallback). All other network access is blocked, so a render cannot fetch anything from outside. Text is HTML-escaped.
+- The words go in a panel placed away from the child's face (face boxes from the face-score `/detect`, grown upwards for hair, and converted for the picture being trimmed to fit the page). Fallback order: preferred side, other side, corners, bottom band. If nothing is clear, or the text cannot fit at the smallest readable size (16 pt), or a font fails to load, the page is flagged `needsHuman` for the review queue.
+- Long names shrink to fit on one line (20 characters tested); Devanagari names render correctly.
+- Previews: WebP, at most 1200 px wide, with a diagonal PREVIEW watermark. Print pages use the same templates without the watermark (print PDF comes in milestone 5).
+- Found by looking at real rendered pages (the numbers alone said everything was fine): fonts did not load (the browser needs a cross-origin header on fonts), poem lines wrapped confusingly, the cover panel was much bigger than its text, and the long-name check measured the wrong width. All fixed and covered by tests.
+- Known limits: the layout planner avoids faces only, not other artwork (on the cover the panel can sit close to a floating icon); the text page is plain (cream paper and a dashed frame) and could get a small decoration; needs Chrome or Chromium in the container (CHROME_PATH) when this runs on Cloud Run.
+- Sample renders for a person to look at: `dev/sample.mts` (needs a gcloud login; output contains the child's pictures, keep it out of the repo).

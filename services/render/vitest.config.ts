@@ -1,0 +1,7 @@
+import { fileURLToPath } from "node:url";
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  resolve: { alias: { "@gycb/shared": fileURLToPath(new URL("../../packages/shared/src/index.ts", import.meta.url)) } },
+  test: { include: ["tests/**/*.test.ts"], testTimeout: 60000 },
+});
